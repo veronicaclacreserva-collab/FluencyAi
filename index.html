@@ -1,0 +1,1338 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2563eb">
+<link rel="manifest" href="manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="FluencyAI">
+<title>FluencyAI — Inglês para a Vida Real</title>
+
+<style>
+:root {
+  --primary:#2563eb;
+  --dark:#1d4ed8;
+  --bg:#f5f7fc;
+  --white:#fff;
+  --text:#1e293b;
+  --muted:#64748b;
+  --border:#e2e8f0;
+  --green:#10b981;
+  --orange:#f59e0b;
+  --red:#ef4444;
+}
+* {
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial, sans-serif;
+}
+body {
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+}
+button { cursor:pointer; }
+.app {
+  max-width:480px;
+  margin:auto;
+  min-height:100vh;
+  background:var(--bg);
+  padding-bottom:85px;
+}
+header {
+  background:white;
+  padding:18px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid var(--border);
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+.logo {
+  color:var(--primary);
+  font-size:21px;
+  font-weight:800;
+}
+.header-level {
+  background:#eff6ff;
+  color:var(--primary);
+  border-radius:20px;
+  padding:7px 12px;
+  font-size:12px;
+  font-weight:bold;
+}
+.screen {
+  display:none;
+  padding:20px;
+}
+.screen.active { display:block; }
+h1 { font-size:26px; margin-bottom:10px; }
+h2 { font-size:21px; margin-bottom:14px; }
+h3 { font-size:17px; margin-bottom:10px; }
+p {
+  color:var(--muted);
+  line-height:1.55;
+}
+.hero {
+  background:linear-gradient(135deg,#2563eb,#60a5fa);
+  padding:25px;
+  border-radius:20px;
+  color:white;
+  margin-bottom:20px;
+}
+.hero h1 { font-size:25px; }
+.hero p { color:#eaf2ff; margin-top:8px; }
+.card {
+  background:white;
+  padding:18px;
+  border-radius:16px;
+  margin-bottom:15px;
+  border:1px solid var(--border);
+}
+.btn {
+  width:100%;
+  border:0;
+  padding:14px;
+  border-radius:12px;
+  font-size:15px;
+  font-weight:bold;
+  margin-top:10px;
+}
+.primary { background:var(--primary); color:white; }
+.secondary { background:#eff6ff; color:var(--primary); }
+.outline {
+  background:white;
+  color:var(--primary);
+  border:1px solid var(--primary);
+}
+.btn:disabled { opacity:.5; cursor:not-allowed; }
+.grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.topic {
+  background:white;
+  border:1px solid var(--border);
+  border-radius:15px;
+  padding:18px 10px;
+  text-align:center;
+  min-height:110px;
+}
+.topic span {
+  display:block;
+  font-size:30px;
+  margin-bottom:8px;
+}
+.topic strong { font-size:14px; }
+.progress {
+  height:9px;
+  background:#e2e8f0;
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:10px;
+}
+.progress-fill {
+  height:100%;
+  background:var(--green);
+  width:0%;
+  transition:.3s;
+}
+.stat-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin:15px 0;
+}
+.stat {
+  background:white;
+  padding:14px 5px;
+  border-radius:12px;
+  text-align:center;
+  border:1px solid var(--border);
+}
+.stat strong {
+  display:block;
+  font-size:21px;
+  color:var(--primary);
+}
+.stat small { color:var(--muted); }
+.lesson {
+  background:white;
+  border:1px solid var(--border);
+  padding:16px;
+  border-radius:14px;
+  margin-bottom:12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+.lesson button {
+  background:#eff6ff;
+  color:var(--primary);
+  border:0;
+  padding:9px 13px;
+  border-radius:9px;
+  font-weight:bold;
+}
+.lesson.done { border-color:var(--green); }
+.tag {
+  font-size:11px;
+  color:var(--green);
+  font-weight:bold;
+}
+.phrase {
+  background:white;
+  border:1px solid var(--border);
+  border-radius:13px;
+  padding:15px;
+  margin-bottom:10px;
+}
+.phrase strong {
+  display:block;
+  font-size:17px;
+  margin-bottom:5px;
+}
+.phrase small { color:var(--muted); }
+.phrase button {
+  float:right;
+  border:0;
+  background:#eff6ff;
+  padding:8px;
+  border-radius:8px;
+  color:var(--primary);
+}
+.word {
+  font-size:24px;
+  font-weight:bold;
+  color:var(--primary);
+  margin:12px 0;
+}
+.lesson-box {
+  background:white;
+  padding:20px;
+  border-radius:18px;
+  margin-bottom:15px;
+}
+.translation {
+  background:#eff6ff;
+  padding:13px;
+  border-radius:10px;
+  margin-top:12px;
+  color:#1d4ed8;
+}
+.chat-area {
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  margin:15px 0;
+}
+.msg {
+  padding:13px;
+  border-radius:13px;
+  max-width:88%;
+  line-height:1.5;
+  font-size:14px;
+}
+.ai {
+  background:#eaf1ff;
+  align-self:flex-start;
+}
+.user {
+  background:var(--primary);
+  color:white;
+  align-self:flex-end;
+}
+.chat-controls {
+  display:flex;
+  gap:8px;
+}
+.chat-controls input {
+  flex:1;
+  min-width:0;
+  padding:13px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  font-size:15px;
+}
+.chat-controls button {
+  border:0;
+  padding:12px;
+  background:var(--primary);
+  color:white;
+  border-radius:10px;
+}
+.mic {
+  width:75px;
+  height:75px;
+  border-radius:50%;
+  border:0;
+  background:var(--primary);
+  color:white;
+  font-size:28px;
+  display:block;
+  margin:18px auto;
+}
+.mic.recording {
+  background:var(--red);
+  animation:pulse 1s infinite;
+}
+@keyframes pulse {
+  50% { box-shadow:0 0 0 12px #ef444433; }
+}
+.feedback {
+  padding:13px;
+  border-radius:10px;
+  margin-top:12px;
+  background:#ecfdf5;
+  color:#047857;
+}
+.quiz-option {
+  width:100%;
+  padding:14px;
+  border:1px solid var(--border);
+  background:white;
+  border-radius:11px;
+  text-align:left;
+  margin:6px 0;
+  font-size:15px;
+}
+.quiz-option.correct {
+  background:#dcfce7;
+  border-color:var(--green);
+}
+.quiz-option.wrong {
+  background:#fee2e2;
+  border-color:var(--red);
+}
+.bottom-nav {
+  position:fixed;
+  bottom:0;
+  left:50%;
+  transform:translateX(-50%);
+  width:100%;
+  max-width:480px;
+  background:white;
+  border-top:1px solid var(--border);
+  display:flex;
+  z-index:20;
+  padding:7px 0;
+}
+.nav-btn {
+  flex:1;
+  border:0;
+  background:none;
+  color:var(--muted);
+  font-size:11px;
+  padding:7px 2px;
+}
+.nav-btn span {
+  display:block;
+  font-size:20px;
+  margin-bottom:3px;
+}
+.nav-btn.active {
+  color:var(--primary);
+  font-weight:bold;
+}
+select {
+  padding:12px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  width:100%;
+  background:white;
+  margin:10px 0;
+}
+.muted { color:var(--muted); font-size:13px; }
+.hide { display:none!important; }
+@media(min-width:600px) {
+  body { padding:20px 0; }
+  .app { border-radius:20px; overflow:hidden; }
+}
+/* Ajustes para celulares */
+body {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app {
+  width: 100%;
+  padding-bottom: calc(85px + env(safe-area-inset-bottom));
+}
+
+.bottom-nav {
+  padding-bottom: calc(7px + env(safe-area-inset-bottom));
+}
+
+button {
+  touch-action: manipulation;
+}
+
+input, select {
+  font-size: 16px;
+}
+
+.screen {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+@media (max-width: 360px) {
+  .grid {
+    gap: 8px;
+  }
+
+  .topic {
+    padding: 14px 6px;
+  }
+
+  .nav-btn {
+    font-size: 10px;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<header>
+  <div class="logo">🗣️ FluencyAI</div>
+  <div class="header-level" id="levelLabel">Iniciante</div>
+</header>
+
+<!-- INÍCIO -->
+<section id="home" class="screen active">
+  <div class="hero">
+    <h1>Seu inglês começa aqui! 🇺🇸</h1>
+    <p>Aprenda do zero, pratique todos os dias e prepare-se para viajar e trabalhar em inglês.</p>
+    <button class="btn" style="background:white;color:#2563eb"
+      onclick="navigate('learn')">Começar a aprender →</button>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat">
+      <strong id="points">0</strong>
+      <small>Pontos</small>
+    </div>
+    <div class="stat">
+      <strong id="completed">0</strong>
+      <small>Lições</small>
+    </div>
+    <div class="stat">
+      <strong id="streak">0</strong>
+      <small>Dias seguidos</small>
+    </div>
+  </div>
+
+  <div class="card">
+    <strong>🎯 Sua evolução</strong>
+    <div class="progress">
+      <div class="progress-fill" id="mainProgress"></div>
+    </div>
+    <p id="progressText" class="muted">Você ainda está começando!</p>
+  </div>
+
+  <h2>O que deseja aprender?</h2>
+  <div class="grid">
+    <button class="topic" onclick="openCategory('basics')">
+      <span>📚</span><strong>Inglês básico</strong>
+    </button>
+    <button class="topic" onclick="openCategory('travel')">
+      <span>✈️</span><strong>Para viajar</strong>
+    </button>
+    <button class="topic" onclick="openCategory('work')">
+      <span>💼</span><strong>Para trabalhar</strong>
+    </button>
+    <button class="topic" onclick="navigate('practice')">
+      <span>🎙️</span><strong>Conversação</strong>
+    </button>
+  </div>
+
+  <button class="btn primary"
+  onclick="startQuiz()">
+  🧠 Fazer exercícios de inglês
+</button>
+
+  <div class="card" style="margin-top:18px">
+    <h3>💡 Dica do dia</h3>
+    <div class="word">Thank you!</div>
+    <p>Obrigado(a)!</p>
+    <button class="btn secondary" onclick="speak('Thank you')">🔊 Ouvir pronúncia</button>
+  </div>
+</section>
+
+<!-- APRENDER -->
+<section id="learn" class="screen">
+  <h1>📚 Aprender inglês</h1>
+  <p>Comece pelo básico e avance no seu ritmo.</p>
+
+  <div class="card">
+    <strong>Escolha seu caminho:</strong>
+    <select id="categorySelect" onchange="renderLessons()">
+      <option value="basics">🌱 Inglês do zero</option>
+      <option value="travel">✈️ Inglês para viagens</option>
+      <option value="work">💼 Inglês para trabalho</option>
+    </select>
+  </div>
+  <div id="lessonList"></div>
+</section>
+
+<!-- AULA -->
+<section id="lesson" class="screen">
+  <button class="btn secondary" onclick="navigate('learn')">← Voltar às lições</button>
+  <h1 id="lessonTitle" style="margin-top:20px">Aula</h1>
+  <p id="lessonDescription"></p>
+  <div id="lessonContent"></div>
+  <button class="btn primary" onclick="completeLesson()">Concluir aula ✓</button>
+</section>
+
+<!-- PRÁTICA -->
+<section id="practice" class="screen">
+  <h1>🎙️ Vamos conversar?</h1>
+  <p>Treine inglês em situações que você encontrará na vida real.</p>
+
+  <div class="card">
+    <strong>Escolha uma situação:</strong>
+    <select id="scenario">
+      <option value="airport">✈️ No aeroporto</option>
+      <option value="hotel">🏨 No hotel</option>
+      <option value="restaurant">🍽️ No restaurante</option>
+      <option value="interview">💼 Entrevista de emprego</option>
+      <option value="work">🤝 No trabalho</option>
+      <option value="introduce">👋 Apresentação pessoal</option>
+    </select>
+    <button class="btn primary" onclick="startPractice()">Iniciar conversa</button>
+  </div>
+
+  <div id="conversation" class="card hide">
+    <h3 id="scenarioTitle">Conversa</h3>
+    <div class="chat-area" id="chatArea"></div>
+
+    <button class="mic" id="micButton" onclick="toggleMic()">🎙️</button>
+    <p class="muted" style="text-align:center" id="micStatus">Toque para falar em inglês</p>
+
+    <div class="chat-controls">
+      <input id="chatInput" placeholder="Digite sua resposta em inglês..."
+        onkeydown="if(event.key==='Enter')sendMessage()">
+      <button onclick="sendMessage()">➤</button>
+    </div>
+
+    <button class="btn secondary" onclick="endPractice()">Finalizar prática</button>
+  </div>
+</section>
+
+<!-- FRASES -->
+<section id="phrases" class="screen">
+  <h1>💬 Frases essenciais</h1>
+  <p>Aprenda expressões que você realmente vai usar.</p>
+
+  <select id="phraseCategory" onchange="renderPhrases()">
+    <option value="basics">Inglês básico</option>
+    <option value="travel">Viagem</option>
+    <option value="work">Trabalho</option>
+  </select>
+  <div id="phraseList"></div>
+</section>
+
+<!-- EXERCÍCIOS -->
+<section id="quiz" class="screen">
+  <h1>🧠 Teste seus conhecimentos</h1>
+  <p>Escolha a resposta correta.</p>
+
+  <div class="card">
+    <div class="muted" id="quizCounter">Pergunta 1</div>
+    <h2 id="question" style="margin-top:15px"></h2>
+    <div id="options"></div>
+    <div id="quizFeedback"></div>
+    <button id="nextQuestion" class="btn primary hide"
+      onclick="nextQuiz()">Próxima pergunta →</button>
+  </div>
+</section>
+
+<!-- PROGRESSO -->
+<section id="progress" class="screen">
+  <h1>📊 Meu progresso</h1>
+  <div class="stat-grid">
+    <div class="stat"><strong id="pPoints">0</strong><small>Pontos</small></div>
+    <div class="stat"><strong id="pLessons">0</strong><small>Aulas</small></div>
+    <div class="stat"><strong id="pStreak">0</strong><small>Dias</small></div>
+  </div>
+
+  <div class="card">
+    <h3>📚 Lições concluídas</h3>
+    <div class="progress">
+      <div class="progress-fill" id="lessonProgress"></div>
+    </div>
+    <p id="lessonProgressText" class="muted"></p>
+  </div>
+
+  <div class="card">
+    <h3>🏆 Seu objetivo</h3>
+    <p>Aprender inglês para viajar e trabalhar com mais confiança.</p>
+    <p style="margin-top:10px">Continue praticando um pouco todos os dias!</p>
+  </div>
+
+  <button class="btn outline" onclick="resetProgress()">Reiniciar meu progresso</button>
+</section>
+
+<!-- AJUSTES -->
+<section id="settings" class="screen">
+  <h1>⚙️ Configurações</h1>
+  <div class="card">
+    <h3>🔊 Velocidade da pronúncia</h3>
+    <input type="range" id="speechSpeed" min="0.5" max="1.2"
+      value="0.8" step="0.1" style="width:100%;margin-top:15px">
+  </div>
+  <div class="card">
+    <h3>🇺🇸 Sotaque</h3>
+    <select id="accent">
+      <option value="en-US">Americano</option>
+      <option value="en-GB">Britânico</option>
+    </select>
+  </div>
+  <div class="card">
+    <h3>📖 Seu nível</h3>
+    <select id="userLevel" onchange="changeLevel()">
+      <option value="Iniciante">Iniciante</option>
+      <option value="Intermediário">Intermediário</option>
+      <option value="Avançado">Avançado</option>
+    </select>
+  </div>
+  <div class="card">
+    <h3>Sobre o FluencyAI</h3>
+    <p>Uma plataforma de aprendizagem de inglês com foco em situações reais.</p>
+    <p class="muted" style="margin-top:10px">Versão 1.0 — Aprendizado básico</p>
+  </div>
+</section>
+
+<nav class="bottom-nav">
+  <button class="nav-btn active" onclick="navigate('home',this)">
+    <span>🏠</span>Início
+  </button>
+  <button class="nav-btn" onclick="navigate('learn',this)">
+    <span>📚</span>Aprender
+  </button>
+  <button class="nav-btn" onclick="navigate('practice',this)">
+    <span>🎙️</span>Praticar
+  </button>
+  <button class="nav-btn" onclick="navigate('phrases',this)">
+    <span>💬</span>Frases
+  </button>
+  <button class="nav-btn" onclick="navigate('progress',this)">
+    <span>📊</span>Progresso
+  </button>
+</nav>
+
+</div>
+
+<script>
+// ======================================
+// DADOS E PROGRESSO
+// ======================================
+
+const lessons = {
+basics:[
+ {
+ id:'b1',title:'1. Primeiras palavras',
+ desc:'Aprenda a cumprimentar as pessoas.',
+ content:[
+ ['Hello','Olá','he-lôu'],
+ ['Hi','Oi','hai'],
+ ['Good morning','Bom dia','gud mór-nin'],
+ ['Good afternoon','Boa tarde','gud af-ter-nún'],
+ ['Good evening','Boa noite (ao chegar)','gud ív-nin'],
+ ['Goodbye','Tchau','gud-bái'],
+ ['Please','Por favor','plíiz'],
+ ['Thank you','Obrigado(a)','thénk iú'],
+ ['Sorry','Desculpe','só-ri'],
+ ['Yes / No','Sim / Não','iés / nôu']
+ ]
+ },
+ {
+ id:'b2',title:'2. Apresentação pessoal',
+ desc:'Aprenda a falar sobre você.',
+ content:[
+ ['My name is...','Meu nome é...','mai nêim iz'],
+ ['I am Brazilian','Eu sou brasileiro(a)','ai ém bra-zí-li-an'],
+ ['I am from Brazil','Eu sou do Brasil','ai ém from bra-zíl'],
+ ['Nice to meet you','Prazer em conhecer você','náis tu míit iú'],
+ ['How are you?','Como você está?','háu ar iú'],
+ ['I am fine','Estou bem','ai ém fáin'],
+ ['I speak Portuguese','Eu falo português','ai spík pór-tchu-guíz'],
+ ['I am learning English','Estou aprendendo inglês','ai ém lêr-nin íng-lish']
+ ]
+ },
+ {
+ id:'b3',title:'3. Números e horários',
+ desc:'Aprenda números essenciais.',
+ content:[
+ ['One / Two / Three','Um / Dois / Três','uân / tú / thrí'],
+ ['Four / Five / Six','Quatro / Cinco / Seis','fór / fáiv / síks'],
+ ['Seven / Eight / Nine','Sete / Oito / Nove','sé-ven / êit / náin'],
+ ['Ten / Twenty','Dez / Vinte','tén / tuén-ti'],
+ ['What time is it?','Que horas são?','uót táim iz it?'],
+ ['It is eight o’clock','São oito horas','it iz êit o-clók']
+ ]
+ },
+ {
+ id:'b4',title:'4. Frases do dia a dia',
+ desc:'Monte frases simples.',
+ content:[
+ ['I want water','Eu quero água','ai uónt uó-ter'],
+ ['I need help','Eu preciso de ajuda','ai níd hélp'],
+ ['I understand','Eu entendo','ai an-der-sténd'],
+ ['I don’t understand','Eu não entendo','ai dount an-der-sténd'],
+ ['Can you repeat?','Você pode repetir?','kén iú ri-pít?'],
+ ['Speak slowly, please','Fale devagar, por favor','spík slôu-li plíz']
+ ]
+ }
+],
+travel:[
+ {
+ id:'t1',title:'1. No aeroporto',
+ desc:'Prepare-se para embarcar.',
+ content:[
+ ['Where is the airport?','Onde fica o aeroporto?','uér iz dhi ér-port?'],
+ ['Where is my gate?','Onde fica meu portão?','uér iz mai gêit?'],
+ ['Here is my passport','Aqui está meu passaporte','hír iz mai pás-port'],
+ ['I have a reservation','Tenho uma reserva','ai rév a re-zer-vêi-shan'],
+ ['Where is baggage claim?','Onde retiro a bagagem?','uér iz bé-gidj clêim?'],
+ ['I need help','Preciso de ajuda','ai níd hélp']
+ ]
+ },
+ {
+ id:'t2',title:'2. No avião e imigração',
+ desc:'Responda perguntas comuns.',
+ content:[
+ ['What is the purpose of your trip?','Qual o motivo da sua viagem?','uót iz dhi pâr-pos óv iór trip?'],
+ ['I am here on vacation','Estou aqui de férias','ai ém hír on vêi-kêi-shan'],
+ ['How long will you stay?','Quanto tempo vai ficar?','háu long uíl iú stêi?'],
+ ['I will stay for one week','Vou ficar uma semana','ai uíl stêi fór uân uík'],
+ ['Where are you staying?','Onde você vai ficar hospedado?','uér ar iú stêi-in?'],
+ ['At a hotel','Em um hotel','ét a hou-tél']
+ ]
+ },
+ {
+ id:'t3',title:'3. No hotel',
+ desc:'Faça check-in e peça ajuda.',
+ content:[
+ ['I have a reservation','Tenho uma reserva','ai rév a re-zer-vêi-shan'],
+ ['I would like a room','Eu gostaria de um quarto','ai wud láik a rúm'],
+ ['What time is check-out?','Que horas é o check-out?','uót táim iz tchék-áut?'],
+ ['Can I have the Wi-Fi password?','Pode me dar a senha do Wi-Fi?','kén ai rév dhi uái-fái pás-uârd?'],
+ ['The room is cold','O quarto está frio','dhi rúm iz côuld']
+ ]
+ },
+ {
+ id:'t4',title:'4. Restaurante e compras',
+ desc:'Peça comida e pergunte preços.',
+ content:[
+ ['Can I see the menu?','Posso ver o cardápio?','kén ai sí dhi mén-iu?'],
+ ['I would like water','Eu gostaria de água','ai wud láik uó-ter'],
+ ['How much is it?','Quanto custa?','háu mâtch iz it?'],
+ ['Can I pay by card?','Posso pagar com cartão?','kén ai pêi bái cárd?'],
+ ['The bill, please','A conta, por favor','dhi bíl plíz']
+ ]
+ }
+],
+work:[
+ {
+ id:'w1',title:'1. Apresentação profissional',
+ desc:'Apresente-se no ambiente de trabalho.',
+ content:[
+ ['I work in...','Eu trabalho em...','ai uârk in'],
+ ['I am looking for a job','Estou procurando emprego','ai ém lú-kin fór a djób'],
+ ['I have experience','Eu tenho experiência','ai rév ik-spí-ri-ens'],
+ ['I am a fast learner','Aprendo rápido','ai ém a fést lêr-ner'],
+ ['Nice to meet you','Prazer em conhecer você','náis tu míit iú'],
+ ['I speak a little English','Eu falo um pouco de inglês','ai spík a lí-tol íng-lish']
+ ]
+ },
+ {
+ id:'w2',title:'2. Entrevista de emprego',
+ desc:'Entenda perguntas comuns.',
+ content:[
+ ['Tell me about yourself','Fale sobre você','tél mi a-báut iór-sélf'],
+ ['What are your strengths?','Quais são seus pontos fortes?','uót ar iór stréngths?'],
+ ['I am responsible','Sou responsável','ai ém ri-spón-sa-bol'],
+ ['I am organized','Sou organizado(a)','ai ém ór-ga-naizd'],
+ ['I am available','Estou disponível','ai ém a-vêi-la-bol'],
+ ['Thank you for the opportunity','Obrigado pela oportunidade','thénk iú fór dhi ó-por-tchú-ni-ti']
+ ]
+ },
+ {
+ id:'w3',title:'3. Comunicação no trabalho',
+ desc:'Frases para conversar com colegas.',
+ content:[
+ ['Can you help me?','Você pode me ajudar?','kén iú hélp mi?'],
+ ['I have a question','Tenho uma pergunta','ai rév a kués-tchan'],
+ ['I will check','Vou verificar','ai uíl tchék'],
+ ['I am working on it','Estou trabalhando nisso','ai ém uâr-kin on it'],
+ ['I will be back soon','Volto em breve','ai uíl bi bék sun'],
+ ['Could you repeat that?','Você poderia repetir?','kud iú ri-pít dhét?']
+ ]
+ }
+]
+};
+
+const phrases={
+basics:[
+ ['Hello!','Olá!'],
+ ['How are you?','Como você está?'],
+ ['My name is...','Meu nome é...'],
+ ['I am learning English','Estou aprendendo inglês'],
+ ['I don’t understand','Eu não entendo'],
+ ['Please speak slowly','Por favor, fale devagar'],
+ ['Thank you very much','Muito obrigado(a)']
+],
+travel:[
+ ['Where is the bathroom?','Onde fica o banheiro?'],
+ ['I need a taxi','Preciso de um táxi'],
+ ['I have a reservation','Tenho uma reserva'],
+ ['Where is the hotel?','Onde fica o hotel?'],
+ ['Can you help me?','Você pode me ajudar?'],
+ ['I am lost','Estou perdido(a)'],
+ ['I need a doctor','Preciso de um médico']
+],
+work:[
+ ['Good morning, everyone','Bom dia a todos'],
+ ['I have experience','Tenho experiência'],
+ ['I am available','Estou disponível'],
+ ['Could you help me?','Você poderia me ajudar?'],
+ ['I understand','Eu entendo'],
+ ['I will check','Vou verificar'],
+ ['Thank you for your time','Obrigado pelo seu tempo']
+]
+};
+
+let state=JSON.parse(localStorage.getItem('fluencyData')||'{}');
+state.points=state.points||0;
+state.completed=state.completed||[];
+state.streak=state.streak||0;
+state.lastDay=state.lastDay||'';
+state.level=state.level||'Iniciante';
+
+let currentLesson=null;
+let currentScenario=null;
+let conversationStep=0;
+let quizIndex=0;
+let quizScore=0;
+let quizAnswered=false;
+
+function save(){
+ localStorage.setItem('fluencyData',JSON.stringify(state));
+ updateStats();
+}
+
+function updateStats(){
+ document.getElementById('points').textContent=state.points;
+ document.getElementById('completed').textContent=state.completed.length;
+ document.getElementById('streak').textContent=state.streak;
+ document.getElementById('pPoints').textContent=state.points;
+ document.getElementById('pLessons').textContent=state.completed.length;
+ document.getElementById('pStreak').textContent=state.streak;
+ document.getElementById('levelLabel').textContent=state.level;
+ document.getElementById('userLevel').value=state.level;
+
+ const total=lessons.basics.length+lessons.travel.length+lessons.work.length;
+ const percent=Math.round(state.completed.length/total*100);
+ document.getElementById('mainProgress').style.width=percent+'%';
+ document.getElementById('lessonProgress').style.width=percent+'%';
+ document.getElementById('progressText').textContent=percent+'% do curso concluído';
+ document.getElementById('lessonProgressText').textContent=
+ state.completed.length+' de '+total+' aulas concluídas';
+}
+
+function navigate(id,button){
+ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+ if(button) button.classList.add('active');
+ else {
+ const index={home:0,learn:1,practice:2,phrases:3,progress:4}[id];
+ const nav=document.querySelectorAll('.nav-btn');
+ if(index!==undefined)nav[index].classList.add('active');
+ }
+ if(id==='learn')renderLessons();
+ if(id==='phrases')renderPhrases();
+ updateStats();
+ window.scrollTo(0,0);
+}
+
+function openCategory(category){
+ document.getElementById('categorySelect').value=category;
+ navigate('learn');
+ renderLessons();
+}
+
+function renderLessons(){
+ const category=document.getElementById('categorySelect').value;
+ const list=document.getElementById('lessonList');
+ list.innerHTML='';
+ lessons[category].forEach(item=>{
+ const done=state.completed.includes(item.id);
+ const div=document.createElement('div');
+ div.className='lesson '+(done?'done':'');
+ div.innerHTML=`
+ <div>
+ <strong>${item.title}</strong>
+ <p class="muted">${item.desc}</p>
+ ${done?'<span class="tag">✓ CONCLUÍDA</span>':''}
+ </div>
+ <button> ${done?'Revisar':'Estudar'} </button>`;
+ div.querySelector('button').onclick=()=>openLesson(item);
+ list.appendChild(div);
+ });
+}
+
+function openLesson(item){
+ currentLesson=item;
+ document.getElementById('lessonTitle').textContent=item.title;
+ document.getElementById('lessonDescription').textContent=item.desc;
+ const content=document.getElementById('lessonContent');
+ content.innerHTML='';
+ item.content.forEach((phrase,index)=>{
+ const div=document.createElement('div');
+ div.className='lesson-box';
+ div.innerHTML=`
+ <small class="muted">PALAVRA OU FRASE ${index+1}</small>
+ <div class="word">${phrase[0]}</div>
+ <p><strong>Tradução:</strong> ${phrase[1]}</p>
+ <div class="translation">
+ <strong>Pronúncia aproximada:</strong><br>${phrase[2]}
+ </div>
+ <button class="btn secondary">🔊 Ouvir em inglês</button>`;
+ div.querySelector('button').onclick=()=>speak(phrase[0]);
+ content.appendChild(div);
+ });
+ navigate('lesson');
+}
+
+function completeLesson(){
+ if(!currentLesson)return;
+ if(!state.completed.includes(currentLesson.id)){
+ state.completed.push(currentLesson.id);
+ state.points+=20;
+ updateStreak();
+ save();
+ alert('Parabéns! Você concluiu sua aula e ganhou 20 pontos! 🎉');
+ }else{
+ alert('Você já concluiu esta aula. Pode revisá-la sempre que quiser!');
+ }
+ navigate('learn');
+}
+
+function updateStreak(){
+ const today=new Date().toISOString().slice(0,10);
+ if(state.lastDay===today)return;
+ const yesterday=new Date();
+ yesterday.setDate(yesterday.getDate()-1);
+ const y=yesterday.toISOString().slice(0,10);
+ state.streak=state.lastDay===y?state.streak+1:1;
+ state.lastDay=today;
+}
+
+function renderPhrases(){
+ const category=document.getElementById('phraseCategory').value;
+ const list=document.getElementById('phraseList');
+ list.innerHTML='';
+ phrases[category].forEach(item=>{
+ const div=document.createElement('div');
+ div.className='phrase';
+ const title=document.createElement('strong');
+ title.textContent=item[0];
+ const translation=document.createElement('small');
+ translation.textContent=item[1];
+ const btn=document.createElement('button');
+ btn.textContent='🔊';
+ btn.onclick=()=>speak(item[0]);
+ div.append(btn,title,translation);
+ list.appendChild(div);
+ });
+}
+
+// ======================================
+// PRONÚNCIA
+// ======================================
+
+function speak(text){
+ if(!('speechSynthesis' in window)){
+ alert('Seu navegador não oferece reprodução de voz.');
+ return;
+ }
+ speechSynthesis.cancel();
+ const msg=new SpeechSynthesisUtterance(text);
+ msg.lang=document.getElementById('accent').value;
+ msg.rate=parseFloat(document.getElementById('speechSpeed').value);
+ speechSynthesis.speak(msg);
+}
+
+// ======================================
+// CONVERSAÇÃO GUIADA
+// ======================================
+
+const scenarios={
+airport:{
+ title:'✈️ No aeroporto',
+ messages:[
+ ['ai','Hello! May I see your passport?'],
+ ['ai','Where are you traveling today?'],
+ ['ai','How long will you stay?'],
+ ['ai','Enjoy your trip!']
+ ],
+ replies:[
+ ['Here is my passport','This is my passport'],
+ ['I am going to the United States','I am going to London'],
+ ['One week','Two weeks'],
+ ['Thank you','Thanks']
+ ]
+},
+hotel:{
+ title:'🏨 No hotel',
+ messages:[
+ ['ai','Hello! Do you have a reservation?'],
+ ['ai','Can I have your name, please?'],
+ ['ai','How many nights will you stay?'],
+ ['ai','Here is your room key.']
+ ],
+ replies:[
+ ['Yes, I have a reservation','Yes'],
+ ['My name is Maria','My name is...'],
+ ['Three nights','Two nights'],
+ ['Thank you very much','Thank you']
+ ]
+},
+restaurant:{
+ title:'🍽️ No restaurante',
+ messages:[
+ ['ai','Hello! Are you ready to order?'],
+ ['ai','What would you like to drink?'],
+ ['ai','Would you like anything else?'],
+ ['ai','Enjoy your meal!']
+ ],
+ replies:[
+ ['Yes, please','Yes'],
+ ['Water, please','I would like water'],
+ ['No, thank you','That is all'],
+ ['Thank you','Thanks']
+ ]
+},
+interview:{
+ title:'💼 Entrevista de emprego',
+ messages:[
+ ['ai','Hello! Can you tell me about yourself?'],
+ ['ai','Do you have work experience?'],
+ ['ai','What are your strengths?'],
+ ['ai','Why do you want this job?']
+ ],
+ replies:[
+ ['My name is Maria. I am from Brazil','I am Brazilian'],
+ ['Yes, I have experience','I have experience'],
+ ['I am responsible and organized','I am responsible'],
+ ['I want to learn and grow','I want this job']
+ ]
+},
+work:{
+ title:'🤝 No trabalho',
+ messages:[
+ ['ai','Good morning! How are you today?'],
+ ['ai','Can you help me with this task?'],
+ ['ai','Do you have any questions?'],
+ ['ai','Thank you for your help!']
+ ],
+ replies:[
+ ['I am fine, thank you','I am good'],
+ ['Yes, I can help you','Of course'],
+ ['No, I understand','I have a question'],
+ ['You are welcome','No problem']
+ ]
+},
+introduce:{
+ title:'👋 Apresentação pessoal',
+ messages:[
+ ['ai','Hello! What is your name?'],
+ ['ai','Where are you from?'],
+ ['ai','What do you do?'],
+ ['ai','Nice to meet you!']
+ ],
+ replies:[
+ ['My name is Maria','I am Maria'],
+ ['I am from Brazil','Brazil'],
+ ['I work in a company','I am a student'],
+ ['Nice to meet you too','Thank you']
+ ]
+}
+};
+
+function startPractice(){
+ currentScenario=document.getElementById('scenario').value;
+ conversationStep=0;
+ const scenario=scenarios[currentScenario];
+ document.getElementById('conversation').classList.remove('hide');
+ document.getElementById('scenarioTitle').textContent=scenario.title;
+ document.getElementById('chatArea').innerHTML='';
+ addMessage('ai',scenario.messages[0][1]);
+ speak(scenario.messages[0][1]);
+}
+
+function addMessage(type,text){
+ const area=document.getElementById('chatArea');
+ const div=document.createElement('div');
+ div.className='msg '+(type==='ai'?'ai':'user');
+ div.textContent=text;
+ area.appendChild(div);
+ area.scrollTop=area.scrollHeight;
+}
+
+function sendMessage(){
+ const input=document.getElementById('chatInput');
+ const text=input.value.trim();
+ if(!text)return;
+ addMessage('user',text);
+ input.value='';
+ processReply(text);
+}
+
+function processReply(text){
+ const scenario=scenarios[currentScenario];
+ const replies=scenario.replies[conversationStep]||[];
+ const normalized=text.toLowerCase();
+ const matched=replies.some(r=>r.toLowerCase().split(' ').some(word=>
+ word.length>3 && normalized.includes(word)));
+ const feedback=matched
+ ?'Great job! Muito bem! 👏'
+ :'Good try! Boa tentativa! Continue praticando.';
+
+ const fb=document.createElement('div');
+ fb.className='feedback';
+ fb.textContent=feedback;
+ document.getElementById('chatArea').appendChild(fb);
+ state.points+=matched?5:1;
+ save();
+
+ conversationStep++;
+ if(conversationStep<scenario.messages.length){
+ const next=scenario.messages[conversationStep][1];
+ setTimeout(()=>{
+ addMessage('ai',next);
+ speak(next);
+ },700);
+ }else{
+ setTimeout(()=>{
+ addMessage('ai','Excellent! You finished this practice. Parabéns! 🎉');
+ state.points+=10;
+ save();
+ },700);
+ }
+}
+
+function endPractice(){
+ document.getElementById('conversation').classList.add('hide');
+ alert('Prática finalizada! Continue estudando para melhorar seu inglês.');
+ navigate('home');
+}
+
+// ======================================
+// RECONHECIMENTO DE VOZ
+// ======================================
+
+let recognition=null;
+let recording=false;
+
+function toggleMic(){
+ const SpeechRecognition=window.SpeechRecognition||
+ window.webkitSpeechRecognition;
+ if(!SpeechRecognition){
+ alert('Reconhecimento de voz não disponível neste navegador. Tente usar o Google Chrome.');
+ return;
+ }
+ if(recording){
+ recognition.stop();
+ return;
+ }
+ recognition=new SpeechRecognition();
+ recognition.lang='en-US';
+ recognition.interimResults=false;
+ recognition.continuous=false;
+
+ recognition.onstart=()=>{
+ recording=true;
+ document.getElementById('micButton').classList.add('recording');
+ document.getElementById('micStatus').textContent='Estou ouvindo... fale em inglês';
+ };
+ recognition.onresult=(event)=>{
+ const text=event.results[0][0].transcript;
+ document.getElementById('chatInput').value=text;
+ document.getElementById('micStatus').textContent='Você disse: '+text;
+ };
+ recognition.onerror=(event)=>{
+ document.getElementById('micStatus').textContent=
+ 'Não consegui ouvir. Tente novamente.';
+ };
+ recognition.onend=()=>{
+ recording=false;
+ document.getElementById('micButton').classList.remove('recording');
+ };
+ recognition.start();
+}
+
+// ======================================
+// EXERCÍCIOS
+// ======================================
+
+const questions=[
+ {
+ q:'Como se diz "Olá" em inglês?',
+ a:['Goodbye','Hello','Please','Sorry'],correct:1,
+ explanation:'Hello significa Olá.'
+ },
+ {
+ q:'O que significa "Thank you"?',
+ a:['Por favor','Desculpe','Obrigado(a)','Bom dia'],correct:2,
+ explanation:'Thank you significa Obrigado(a).'
+ },
+ {
+ q:'Como dizer "Eu sou do Brasil"?',
+ a:['I am from Brazil','I need Brazil','I like Brazil','I go Brazil'],correct:0,
+ explanation:'I am from Brazil significa Eu sou do Brasil.'
+ },
+ {
+ q:'Como perguntar "Quanto custa?"?',
+ a:['Where are you?','How much is it?','What is your name?','How are you?'],correct:1,
+ explanation:'How much is it? é Quanto custa?'
+ },
+ {
+ q:'Como dizer "Preciso de ajuda"?',
+ a:['I am happy','I want food','I need help','I am fine'],correct:2,
+ explanation:'I need help significa Preciso de ajuda.'
+ },
+ {
+ q:'O que significa "I don’t understand"?',
+ a:['Eu não entendo','Eu não quero','Eu estou bem','Eu preciso ir'],correct:0,
+ explanation:'I don’t understand significa Eu não entendo.'
+ },
+ {
+ q:'Como dizer "Tenho uma reserva"?',
+ a:['I have a reservation','I need a room','I am traveling','I have a ticket'],correct:0,
+ explanation:'I have a reservation significa Tenho uma reserva.'
+ },
+ {
+ q:'Como dizer "Eu tenho experiência"?',
+ a:['I am available','I have experience','I need a job','I work today'],correct:1,
+ explanation:'I have experience significa Eu tenho experiência.'
+ }
+];
+
+function startQuiz(){
+ quizIndex=0;
+ quizScore=0;
+ quizAnswered=false;
+ showQuestion();
+ navigate('quiz');
+}
+
+function showQuestion(){
+ const q=questions[quizIndex];
+ document.getElementById('quizCounter').textContent=
+ 'Pergunta '+(quizIndex+1)+' de '+questions.length;
+ document.getElementById('question').textContent=q.q;
+ document.getElementById('quizFeedback').textContent='';
+ document.getElementById('nextQuestion').classList.add('hide');
+ const options=document.getElementById('options');
+ options.innerHTML='';
+ q.a.forEach((answer,index)=>{
+ const btn=document.createElement('button');
+ btn.className='quiz-option';
+ btn.textContent=answer;
+ btn.onclick=()=>answerQuiz(index);
+ options.appendChild(btn);
+ });
+ quizAnswered=false;
+}
+
+function answerQuiz(index){
+ if(quizAnswered)return;
+ quizAnswered=true;
+ const q=questions[quizIndex];
+ const buttons=document.querySelectorAll('.quiz-option');
+ buttons.forEach((b,i)=>{
+ b.disabled=true;
+ if(i===q.correct)b.classList.add('correct');
+ if(i===index&&i!==q.correct)b.classList.add('wrong');
+ });
+ const correct=index===q.correct;
+ if(correct){
+ quizScore++;
+ state.points+=10;
+ save();
+ }
+ document.getElementById('quizFeedback').innerHTML=
+ '<div class="feedback">'+
+ (correct?'✅ Resposta correta! ':'❌ Não foi dessa vez. ')+
+ q.explanation+'</div>';
+ document.getElementById('nextQuestion').classList.remove('hide');
+}
+
+function nextQuiz(){
+ quizIndex++;
+ if(quizIndex<questions.length){
+ showQuestion();
+ }else{
+ document.getElementById('question').textContent=
+ 'Você acertou '+quizScore+' de '+questions.length+' perguntas!';
+ document.getElementById('options').innerHTML='';
+ document.getElementById('quizFeedback').textContent=
+ 'Sua pontuação foi '+Math.round(quizScore/questions.length*100)+'%. Continue praticando!';
+ document.getElementById('nextQuestion').textContent='Voltar ao início';
+ document.getElementById('nextQuestion').classList.remove('hide');
+ document.getElementById('nextQuestion').onclick=()=>{
+ document.getElementById('nextQuestion').onclick=nextQuiz;
+ document.getElementById('nextQuestion').textContent='Próxima pergunta →';
+ navigate('home');
+ };
+ }
+}
+
+function changeLevel(){
+ state.level=document.getElementById('userLevel').value;
+ save();
+}
+
+function resetProgress(){
+ if(confirm('Deseja realmente apagar todas as suas lições e pontos?')){
+ state={points:0,completed:[],streak:0,lastDay:'',level:'Iniciante'};
+ save();
+ alert('Progresso reiniciado.');
+ navigate('home');
+ }
+}
+
+// ======================================
+// INICIALIZAÇÃO
+// ======================================
+
+updateStats();
+renderLessons();
+renderPhrases();
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js")
+      .then(() => console.log("FluencyAI pronto para instalação!"))
+      .catch(error => console.error("Erro PWA:", error));
+  });
+}
+</script>
+
+</body>
+</html>

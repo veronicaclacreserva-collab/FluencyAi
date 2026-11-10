@@ -1,0 +1,21 @@
+
+{
+  "name": "FluencyAI - Inglês para a Vida Real",
+  "short_name": "FluencyAI",
+  "description": "Aprenda inglês do zero para viajar e trabalhar.",
+  "lang": "pt-BR",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f5f7fc",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "./icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

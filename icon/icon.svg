@@ -1,0 +1,25 @@
+
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="110"
+        fill="#2563eb"/>
+  <path d="M110 130 Q110 100 145 100 H367
+           Q402 100 402 135 V305
+           Q402 340 367 340 H245
+           L160 410 V340 H145
+           Q110 340 110 305 Z"
+        fill="white"/>
+  <text x="256" y="265"
+        font-size="125"
+        text-anchor="middle"
+        font-family="Arial"
+        font-weight="bold"
+        fill="#2563eb">A</text>
+  <circle cx="355" cy="365" r="65" fill="#10b981"/>
+  <path d="M325 365 L347 387 L388 338"
+        fill="none"
+        stroke="white"
+        stroke-width="17"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+</svg>
